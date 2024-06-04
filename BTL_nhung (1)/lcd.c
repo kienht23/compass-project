@@ -17,7 +17,8 @@ void SegLCD_Init(void){ //Initializes all components of SLCD on the FRDM-KL46Z
 	SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK | SIM_SCGC5_PORTC_MASK | SIM_SCGC5_PORTD_MASK | SIM_SCGC5_PORTE_MASK | SIM_SCGC5_SLCD_MASK; 
 	//Enable Clock to ports B, C, D and E, and SegLCD Peripheral
 	
-	MCG->C1 |= MCG_C1_IRCLKEN_MASK;
+	// Enable Multiple Purpose CLock for LCD Alternative clock source
+	MCG->C1 |= MCG_C1_IRCLKEN_MASK;		//MCG->C1 |= 0x02;
 	
 
 	
@@ -39,10 +40,10 @@ void SegLCD_Init(void){ //Initializes all components of SLCD on the FRDM-KL46Z
 								 0x100  |				//LCD_P8
 								 0x400  |				//LCD_P10
 								 0x800  |				//LCD_P11
-								 0x20000|				//LCD_P17
+								 //0x20000|				//LCD_P17
 								 0x40000|				//LCD_P18
 								 0x80000;				//LCD_P19
-	LCD->PEN[1] =  0x20000 |				//LCD_P37
+	LCD->PEN[1] =  //0x20000 |				//LCD_P37
 								 0x40    |				//LCD_P38
 								 0x100   |				//LCD_P40
 								 0x100000|				//LCD_P52
@@ -109,18 +110,18 @@ void SegLCD_DisplayDecimal(uint16_t Value){//Displays a 4 Digit number in decima
 
 
 void SegLCD_DisplayError(uint8_t ErrorNum){//Displays Err# on screen, where # is a value 0-F.  If ErrorNum is outside of that range, just displays Err
-	LCD->WF8B[37u] = (LCD_SEG_D | LCD_SEG_E | LCD_SEG_F | LCD_SEG_G);
-	LCD->WF8B[17u] = (LCD_SEG_A);
-	LCD->WF8B[7u] = (LCD_SEG_E | LCD_SEG_G);
-	LCD->WF8B[53u] = (LCD_CLEAR);
-	LCD->WF8B[38u] = (LCD_SEG_E | LCD_SEG_G);
-	LCD->WF8B[38u] = (LCD_CLEAR);
+	LCD->WF8B[2] = (LCD_SEG_D | LCD_SEG_E | LCD_SEG_F | LCD_SEG_G);
+	LCD->WF8B[3] = (LCD_SEG_A);
+	LCD->WF8B[4] = (LCD_SEG_E | LCD_SEG_G);
+	LCD->WF8B[5] = (LCD_CLEAR);
+	LCD->WF8B[6] = (LCD_SEG_E | LCD_SEG_G);
+	LCD->WF8B[7] = (LCD_CLEAR);
 	if(ErrorNum < 0x10){
-		SegLCD_Set(ErrorNum,4); //Display ErrorNum in digit 4 if within valid range.  If not, leave blank.
+		SegLCD_Set(ErrorNum,4); //Display ErrorNum in digit 1 if within valid range.  If not, leave blank.
 	}
 	else{
-		LCD->WF8B[10u] = (LCD_CLEAR);
-		LCD->WF8B[11u] = (LCD_CLEAR);
+		LCD->WF8B[0] = (LCD_CLEAR);
+		LCD->WF8B[1] = (LCD_CLEAR);
 	}
 }//End SegLCD_DisplayError
 

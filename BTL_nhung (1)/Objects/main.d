@@ -8,7 +8,6 @@
 .\objects\main.o: .\RTE\Device\MKL46Z256VLL4\system_MKL46Z4.h
 .\objects\main.o: I2C.h
 .\objects\main.o: delay.h
-.\objects\main.o: uart.h
 .\objects\main.o: mag.h
 .\objects\main.o: lcd.h
 .\objects\main.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h

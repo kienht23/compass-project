@@ -6,8 +6,10 @@
 
 volatile uint32_t msTicks = 0;
 uint8_t volatile state = false;
-uint32_t TICK_Green = 1000; // 1000ms = 1Hz
-uint32_t TICK_Red = 500; // 500ms = 2Hz
+uint32_t TICK_Green = 500; // 1000ms = 1Hz
+uint32_t TICK_Red = 250; // 500ms = 2Hz
+volatile uint32_t green = 0;
+volatile uint32_t red = 0;
 
 void Init_Systick(){
 	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk |SysTick_CTRL_TICKINT_Msk |SysTick_CTRL_ENABLE_Msk;
@@ -21,11 +23,36 @@ void Shutdown(){
 
 void SysTick_Handler (void){
 	msTicks++;
-	
+	if (state == false) {
+		PTE->PDOR |= (1<<29);
+		red = 0;
+		green++;
+		if (green == 250) {
+			PTD->PTOR |= 1 << 5;
+			green = 0;
+		}
+	}
+	else if(state == true){
+		green = 0;
+		red ++;
+		PTD->PDOR |= (1<<5);
+		if(red == 500){
+			red = 0;
+			PTE->PTOR |= 1<<29;
+		}
+		msTicks = 0;
+	}
 }
 
 void Delay (uint32_t TICK) {
-	while (msTicks < TICK); // Wait 500ms
+	while (msTicks < TICK) {
+		/*uint32_t i =0;
+		if (state == false) {	
+			PTE->PTOR |= 1 << 29;
+			msTicks = 0;
+			Delay(TICK_Red);
+		}*/ 
+	}
 	msTicks = 0; // Reset counter
 	
 }
@@ -42,10 +69,6 @@ void init_LED() {
 	PTE->PDDR |= 1 << 29; //This sets PTE29 as an output
 }
 
-void reset_LED() {
-	PTD->PSOR |= 1 << 5;
-	PTE->PCOR |= 1 << 29;
-}
 
 void init_SW() {
 	SIM->SCGC5 |= 1u << 11; //This enables the clock to PORTC
@@ -54,16 +77,11 @@ void init_SW() {
   PORTC->PCR[3] |= 1u << 8 | 1 << 1 | 1 << 0; //This sets GPIO and Enable pull-up resistor
   PTC->PDDR &= ~(1u << 3); //This sets PTC3 as an input. 
 	
-	//SW2 PORTC12
-  PORTC->PCR[12] |= 1u << 8 | 1 << 1 | 1 << 0; //This sets GPIO and Enable pull-up resistor
-  PTC->PDDR &= ~(1u << 12); //This sets PTC12 as an input. 
-	
 }
 
 void init_ITR_SW(void) {
 	//Select falling edge interrupts for PORTC[3].
 	PORTC->PCR[3]	 |=  (0xA) << 16; //OR		PORTC->PCR[3] |= PORT_PCR_IRQC(0xA);
-	PORTC->PCR[12] |=  (0xA) << 16; //OR		PORTC->PCR[12] |= PORT_PCR_IRQC(0xA);
 	
 	NVIC_ClearPendingIRQ(31); // number for both PORTC and PORTD are 31
 	NVIC_EnableIRQ(31);
@@ -72,49 +90,27 @@ void init_ITR_SW(void) {
 
 //SW1 interrupt Handler
 void PORTC_PORTD_IRQHandler(void) {
-	//If SW1 not press => do nothing
-	if ((PTC->PDIR & (1<<3)) != 0)
-		return;
 	
-	//Toggle state System
-	if (state == false) {
-		PTD->PCOR |= 1 << 5;
-		PTE->PSOR |= 1 << 29;
-		state = true;
+	//If SW1 not press => do nothing
+	if ((PTC->PDIR & (1<<3)) != 0) {
+		return;
+	}else {//Toggle state System
+		if (state == false) {
+			PTE->PCOR |= 1 << 29;
+			PTD->PSOR |= 1 << 5;
+			state = true;
+		}
+		else {
+			PTE->PSOR |= 1 << 29;
+			PTD->PCOR |= 1 << 5;
+			state = false;
+		}
 	}
-	else {
-		PTD->PSOR |= 1 << 5;
-		PTE->PCOR |= 1 << 29;
-		state = false;
-	}
-
+	
+	
 	/* Clear interrupt service flag */
 	PORTC->PCR[3] |= 1 << 24; 
 }
 
-//SU2 interrupt 
-void SW2_RESET(void) {
-		if ((PTC->PDIR & (1<<12)) != 0)
-			state = state;
-		else {
-				reset_LED();
-		}
-		/* Clear interrupt service flag */
-	PORTC->PCR[12] |= 1 << 24; 
-		
-}
 
 
-
-void toggle_LED() {
-	if (state == false) {	
-			PTE->PTOR |= 1 << 29;
-			msTicks = 0;
-			Delay(TICK_Red);
-		} 
-		else {
-			PTD->PTOR |= 1 << 5;
-			msTicks = 0;
-			Delay(TICK_Green);
-		}
-}

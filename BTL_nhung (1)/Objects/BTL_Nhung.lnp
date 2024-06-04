@@ -1,6 +1,5 @@
 --cpu Cortex-M0+ --scatter "./RTE/Device/MKL46Z256VLL4/MKL46Z256xxx4_flash.scf"
 ".\objects\delay.o"
-".\objects\uart.o"
 ".\objects\i2c.o"
 ".\objects\mag.o"
 ".\objects\main.o"
