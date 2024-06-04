@@ -1,0 +1,138 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.39.0.0
+Copyright (C) 2023 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Nguyen nam, abc, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.39.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.39.0.0
+Dialog DLL:      DARMCM1.DLL V1.19.6.0
+Target DLL:      PEMicro\Pemicro_ArmCortexInterface.dll V1.3.0.0
+Dialog DLL:      TARMCM1.DLL V1.14.6.0
+ 
+<h2>Project:</h2>
+C:\Users\Windows\OneDrive - vnu.edu.vn\Documents\demo_apps\BTL_Nhung\BTL_Nhung.uvprojx
+Project File Date:  06/04/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin'
+Rebuild target 'Target 1'
+assembling startup_MKL46Z4.s...
+compiling delay.c...
+delay.h(4): warning:  #1295-D: Deprecated declaration Init_Systick - give arg types
+  void Init_Systick();
+delay.h(5): warning:  #1295-D: Deprecated declaration Shutdown - give arg types
+  void Shutdown();
+delay.h(14): warning:  #1-D: last line of file ends without a newline
+  void toggle_LED(void);
+delay.c(15): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_SetPriority(-1,15);
+delay.c(68): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_ClearPendingIRQ(31); // number for both PORTC and PORTD are 31
+delay.c(69): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_EnableIRQ(31);
+delay.c(120): warning:  #1-D: last line of file ends without a newline
+  }
+delay.c: 7 warnings, 0 errors
+compiling uart.c...
+uart.h(10): warning:  #1-D: last line of file ends without a newline
+  void UART_SendFloat(float data);
+uart.c(80): warning:  #1-D: last line of file ends without a newline
+  }
+uart.c: 2 warnings, 0 errors
+compiling lcd.c...
+lcd.c(75): warning:  #177-D: variable "k"  was declared but never referenced
+  	int k;
+lcd.c(9): warning:  #177-D: variable "LCD_Bap_Pin"  was declared but never referenced
+  const static uint8_t LCD_Bap_Pin[4] = {40u, 52u, 19u, 18u};
+lcd.c: 2 warnings, 0 errors
+compiling main.c...
+delay.h(4): warning:  #1295-D: Deprecated declaration Init_Systick - give arg types
+  void Init_Systick();
+delay.h(5): warning:  #1295-D: Deprecated declaration Shutdown - give arg types
+  void Shutdown();
+delay.h(14): warning:  #1-D: last line of file ends without a newline
+  void toggle_LED(void);
+uart.h(10): warning:  #1-D: last line of file ends without a newline
+  void UART_SendFloat(float data);
+mag.h(8): warning:  #1295-D: Deprecated declaration mag_Init - give arg types
+  void mag_Init();
+mag.h(9): warning:  #1-D: last line of file ends without a newline
+  mag3110 mag_read();
+mag.h(9): warning:  #1295-D: Deprecated declaration mag_read - give arg types
+  mag3110 mag_read();
+main.c(48): warning:  #111-D: statement is unreachable
+  	return 0;
+main.c(49): warning:  #1-D: last line of file ends without a newline
+  }
+main.c: 9 warnings, 0 errors
+compiling I2C.c...
+compiling mag.c...
+mag.h(8): warning:  #1295-D: Deprecated declaration mag_Init - give arg types
+  void mag_Init();
+mag.h(9): warning:  #1-D: last line of file ends without a newline
+  mag3110 mag_read();
+mag.h(9): warning:  #1295-D: Deprecated declaration mag_read - give arg types
+  mag3110 mag_read();
+delay.h(4): warning:  #1295-D: Deprecated declaration Init_Systick - give arg types
+  void Init_Systick();
+delay.h(5): warning:  #1295-D: Deprecated declaration Shutdown - give arg types
+  void Shutdown();
+delay.h(14): warning:  #1-D: last line of file ends without a newline
+  void toggle_LED(void);
+mag.c(37): warning:  #1-D: last line of file ends without a newline
+  }
+mag.c: 7 warnings, 0 errors
+compiling system_MKL46Z4.c...
+linking...
+.\Objects\BTL_Nhung.axf: Warning: L6914W: option ro-base ignored when using --scatter.
+.\Objects\BTL_Nhung.axf: Warning: L6914W: option rw-base ignored when using --scatter.
+.\Objects\BTL_Nhung.axf: Warning: L6340W: options first and last are ignored for link type of scattered
+Program Size: Code=12672 RO-data=720 RW-data=20 ZI-data=2144  
+Finished: 0 information, 3 warning and 0 error messages.
+".\Objects\BTL_Nhung.axf" - 0 Error(s), 30 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM::CMSIS@5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.6.0
+
+Package Vendor: NXP
+                http://mcuxpresso.nxp.com/cmsis_pack/repo/NXP.MKL46Z4_DFP.10.0.3.pack
+                NXP::MKL46Z4_DFP@10.0.3
+                Device Family Pack for MKL46Z4
+   * Component: Startup Version: 1.0.0
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/Device/MKL46Z256VLL4
+  ./RTE/_Target_1
+  C:/Users/Windows/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE@5.6.0
+
+   * Component: NXP::Device:Startup@1.0.0
+      Source file:   arm/startup_MKL46Z4.s
+      Include file:  fsl_device_registers.h
+      Include file:  MKL46Z4_features.h
+      Include file:  MKL46Z4.h
+      Source file:   system_MKL46Z4.c
+      Include file:  system_MKL46Z4.h
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
